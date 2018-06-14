@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-title" content="react boilerplate">
+
+    <title>X's and O's</title>
+  </head>
+  <body>
+    <!-- Display a message if JS has been disabled on the browser. -->
+    <noscript>If you're seeing this message, that means <strong>JavaScript has been disabled on your browser</strong>, please <strong>enable JS</strong> to make this app work.</noscript>
+
+    <div id="root"></div>
+
+     <!-- For development only -->
+    <script crossorigin src="https://unpkg.com/react@16/umd/react.development.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
+    <script crossorigin src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/6.26.0/babel.min.js"></script>
+    
+    <script type="text/babel">
+        class Board extends React.Component {
+            constructor(props) {
+                super(props);
+                this.state = {
+                    squares: Array(9).fill(null),
+                };
+
+            }
+
+            updateSquare(i) {
+                console.log('hi')
+            }
+
+            displaySquare(i) {
+                return <Square value={this.state.squares[i]} updateSquare={() => this.updateSquare(i)}/>
+            }
+
+            render() {
+                return (
+                    <div>
+                        <div style={{display: 'table-row'}}>
+                            {this.displaySquare(0)}
+                            {this.displaySquare(1)}
+                            {this.displaySquare(2)}
+                        </div>
+                        <div style={{display: 'table-row'}}>
+                            {this.displaySquare(3)}
+                            {this.displaySquare(4)}
+                            {this.displaySquare(5)}
+                        </div>
+                        <div style={{display: 'table-row'}}>
+                            {this.displaySquare(6)}
+                            {this.displaySquare(7)}
+                            {this.displaySquare(8)}
+                        </div>
+                    </div>);
+            }
+        }
+
+        class Square extends React.Component {
+            constructor(props) {
+                super(props);
+            }
+
+            render() {
+                const {value} = this.props;
+                const squareStyle = {
+                    float: 'left',
+                    border: '1px solid black',
+                    cursor: 'pointer',
+                    width: '50px',
+                    height: '50px',
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                }
+
+                return (
+                    <div style={squareStyle}>{value}</div>
+                );
+            }
+        }
+
+        ReactDOM.render(
+            <Board />,
+            document.getElementById('root')
+        );
+
+    </script>
+</html>
