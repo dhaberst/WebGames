@@ -30,7 +30,7 @@
             }
 
             updateSquare(i) {
-                console.log('hi')
+                console.log(i)
             }
 
             displaySquare(i) {
@@ -78,7 +78,7 @@
                 }
 
                 return (
-                    <div style={squareStyle}>{value}</div>
+                    <div style={squareStyle} onClick={() => this.props.updateSquare}>{value}</div>
                 );
             }
         }
