@@ -4,7 +4,6 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-title" content="react boilerplate">
 
     <title>X's and O's</title>
   </head>
@@ -26,28 +25,72 @@
                 this.state = {
                     squares: Array(9).fill(null),
                     isXTurn: true,
+                    endGame: false,
                 };
 
                 this.updateSquare = this.updateSquare.bind(this);
+
+                // All the different possible ways of winning in X's and O's by the indexes of the array
+                this.winConditions = [
+                    [0, 1, 2],
+                    [3, 4, 5],
+                    [6, 7, 8],
+                    [0, 3, 6],
+                    [1, 4, 7],
+                    [2, 5, 8],
+                    [0, 4, 8],
+                    [2, 4, 6],
+                ]
             }
 
+            // A function that loops through windconditions and checks if the values aren't null then checks if they are equal
+            checkWinConditions() {
+                for (var i = 0; i < this.winConditions.length; i++) {
+                    if (this.state.squares[this.winConditions[i][0]] !== null && this.state.squares[this.winConditions[i][1]] !== null && this.state.squares[this.winConditions[i][2]] !== null) {
+                        if (this.state.squares[this.winConditions[i][0]] === this.state.squares[this.winConditions[i][1]] && this.state.squares[this.winConditions[i][1]] === this.state.squares[this.winConditions[i][2]]) {
+                            this.setState({endGame: true});
+                        }
+                    }
+                }
+            }
+
+            // A function that resets the game by setting endGame back to false and resetting the array
+            reset() {
+                this.setState({squares: Array(9).fill(null)});
+                this.setState({endGame: false});
+            }
+
+            // A function that each square uses that sets the index possed in to the current letter
             updateSquare(i) {
                 if (this.state.squares[i] === null)
                 {
                     var newArray = this.state.squares.slice();
                     newArray[i] = this.state.isXTurn ? 'X' : 'O';
-                    this.setState({squares: newArray});
+                    this.setState({squares: newArray}, this.checkWinConditions);
                     this.setState({isXTurn: !this.state.isXTurn});
                 }
             }
 
+            // A simplifying function that return a Square
             displaySquare(i) {
                 return <Square value={this.state.squares[i]} updateSquare={() => this.updateSquare(i)}/>
             }
 
             render() {
-                return (
+                if (this.state.endGame) {
+                    return (
+                        <div>
+                            <div>
+                                <img src="https://media1.tenor.com/images/f4ee31deebabeda0f4309f00f29ce47b/tenor.gif" />
+                            </div>
+                            <div>
+                                <button onClick={() => this.reset()}>reset</button>
+                            </div>
+                        </div>);
+                } else {
+                    return (
                     <div>
+                        <h4>It is {this.state.isXTurn ? 'X' : 'O'}'s Turn </h4>
                         <div style={{display: 'table-row'}}>
                             {this.displaySquare(0)}
                             {this.displaySquare(1)}
@@ -64,6 +107,7 @@
                             {this.displaySquare(8)}
                         </div>
                     </div>);
+                }
             }
         }
 
