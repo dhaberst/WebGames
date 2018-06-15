@@ -25,12 +25,17 @@
                 super(props);
                 this.state = {
                     squares: Array(9).fill(null),
+                    isXTurn: true,
                 };
 
+                this.updateSquare = this.updateSquare.bind(this);
             }
 
             updateSquare(i) {
-                console.log(i)
+                var newArray = this.state.squares.slice();
+                newArray[i] = this.state.isXTurn ? 'X' : 'O';
+                this.setState({squares: newArray});
+                this.setState({isXTurn: !this.state.isXTurn});
             }
 
             displaySquare(i) {
@@ -78,7 +83,7 @@
                 }
 
                 return (
-                    <div style={squareStyle} onClick={() => this.props.updateSquare}>{value}</div>
+                    <div style={squareStyle} onClick={this.props.updateSquare}>{value}</div>
                 );
             }
         }
