@@ -32,10 +32,13 @@
             }
 
             updateSquare(i) {
-                var newArray = this.state.squares.slice();
-                newArray[i] = this.state.isXTurn ? 'X' : 'O';
-                this.setState({squares: newArray});
-                this.setState({isXTurn: !this.state.isXTurn});
+                if (this.state.squares[i] === null)
+                {
+                    var newArray = this.state.squares.slice();
+                    newArray[i] = this.state.isXTurn ? 'X' : 'O';
+                    this.setState({squares: newArray});
+                    this.setState({isXTurn: !this.state.isXTurn});
+                }
             }
 
             displaySquare(i) {
