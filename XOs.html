@@ -26,6 +26,7 @@
                     squares: Array(9).fill(null),
                     isXTurn: true,
                     endGame: false,
+                    isTie: false,
                 };
 
                 this.updateSquare = this.updateSquare.bind(this);
@@ -49,15 +50,28 @@
                     if (this.state.squares[this.winConditions[i][0]] !== null && this.state.squares[this.winConditions[i][1]] !== null && this.state.squares[this.winConditions[i][2]] !== null) {
                         if (this.state.squares[this.winConditions[i][0]] === this.state.squares[this.winConditions[i][1]] && this.state.squares[this.winConditions[i][1]] === this.state.squares[this.winConditions[i][2]]) {
                             this.setState({endGame: true});
+                            return;
                         }
                     }
+                }
+                
+                // Need ot check if the squares are all full (tie game)
+                var stillPlaying = false;
+                for (var i = 0; i < this.state.squares.length; i++) {
+                    // Not all squares are full
+                    if (this.state.squares[i] === null) {
+                       stillPlaying = true;
+                    }
+                }
+
+                if (!stillPlaying) {
+                    this.setState({endGame: true, isTie: true,});
                 }
             }
 
             // A function that resets the game by setting endGame back to false and resetting the array
             reset() {
-                this.setState({squares: Array(9).fill(null)});
-                this.setState({endGame: false});
+                this.setState({squares: Array(9).fill(null), endGame: false, isTie: false,});
             }
 
             // A function that each square uses that sets the index possed in to the current letter
@@ -80,6 +94,8 @@
                 if (this.state.endGame) {
                     return (
                         <div>
+                            {this.state.isTie && <h4>It's a TIE</h4> }
+                            {!this.state.isTie && <h4>{this.state.isXTurn ? 'O' : 'X'}'s WON </h4> }
                             <div>
                                 <img src="https://media1.tenor.com/images/f4ee31deebabeda0f4309f00f29ce47b/tenor.gif" />
                             </div>
